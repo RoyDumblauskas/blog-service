@@ -10,13 +10,17 @@
     pkgs = nixpkgs.legacyPackages.${system};
 
     reactApp = pkgs.buildNpmPackage {
-      name = "React Frontend";
+      pname = "React Frontend";
       version = "0.1.0";
-      src = "./.";
+      npmRoot = "frontend";
+      src = ./frontend;
 
       npmDepsHash = "";
 
-      # TODO: Configure npm building of frontend
+      nativeBuildInputs = with pkgs; [
+        vite
+        nodejs
+      ];
 
     };
 
