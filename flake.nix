@@ -12,16 +12,14 @@
     reactApp = pkgs.buildNpmPackage {
       pname = "React Frontend";
       version = "0.1.0";
-      npmRoot = "frontend";
+      npmRoot = ./frontend;
       src = ./frontend;
 
-      npmDepsHash = "";
+      npmDepsHash = "sha256-nkle3F6olonXwCejF7uJ68g5bcNeM6c6TJ9sMTGn3cM=";
 
       nativeBuildInputs = with pkgs; [
-        vite
-        nodejs
+        nodejs_22
       ];
-
     };
 
     nixosModule = {config, lib, pkgs, ...}:
