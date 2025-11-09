@@ -8,17 +8,20 @@ export default function Navbar() {
         component={Link}
         to="/"
         variant="outlined"
+        className="flex flex-1"
       >
         Home
       </Button>
 
       <Button
         component={Link}
-        to="/article"
+        to="/articleList"
         variant="outlined"
+        className="flex flex-1"
       >
         Article
       </Button>
+      <div className="flex flex-8"></div>
     </div>
   );
 };
