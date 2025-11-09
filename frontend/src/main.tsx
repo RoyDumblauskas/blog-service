@@ -8,11 +8,11 @@ import Navbar from './components/Navbar.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Navbar />
     <BrowserRouter>
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/article:articleId" element={<Article />} />
+        <Route path="/article" element={<Article />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
