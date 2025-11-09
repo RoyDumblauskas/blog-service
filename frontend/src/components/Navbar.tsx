@@ -8,7 +8,6 @@ export default function Navbar() {
         component={Link}
         to="/"
         variant="outlined"
-        className="flex flex-1"
       >
         Home
       </Button>
@@ -17,11 +16,9 @@ export default function Navbar() {
         component={Link}
         to="/articleList"
         variant="outlined"
-        className="flex flex-1"
       >
-        Article
+        Articles
       </Button>
-      <div className="flex flex-8"></div>
     </div>
   );
 };
