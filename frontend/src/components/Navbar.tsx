@@ -3,22 +3,22 @@ import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   return (
-    <div className="flex-row">
+    <div className="flex flex-row gap-3">
       <Button
-        variant="outlined"
         component={Link}
         to="/"
+        variant="outlined"
       >
         Home
       </Button>
+
       <Button
-        variant="outlined"
         component={Link}
         to="/article"
+        variant="outlined"
       >
         Article
       </Button>
-
     </div>
   );
 };
