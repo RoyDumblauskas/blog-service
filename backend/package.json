@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "description": "rdumb-blog backend with expressts and drizzle orm",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "author": "Roy Dumblauskas",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.44.7",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.6",
+    "drizzle-kit": "^0.31.7",
+    "tsx": "^4.20.6"
+  }
+}
