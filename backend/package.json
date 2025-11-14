@@ -4,7 +4,7 @@
   "description": "rdumb-blog backend with expressts and drizzle orm",
   "main": "src/index.ts",
   "scripts": {
-    "test": "exit 0"
+    "start": "npx tsx --env-file=.env --watch  src/index.ts"
   },
   "author": "Roy Dumblauskas",
   "license": "ISC",
