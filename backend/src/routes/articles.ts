@@ -6,7 +6,7 @@ import express, { Request, Response } from "express";
 const db = drizzle(process.env.DATABASE_URL!);
 export const articlesRouter = express.Router();
 
-articlesRouter.get("/getAllArticles", async (req: Request, res: Response) => {
+articlesRouter.get("/getAllArticles", async (_, res: Response) => {
   const resp = await db.select().from(articles);
   res.json({ resp });
 });
@@ -17,6 +17,15 @@ articlesRouter.get("/getArticle/:articleId", async (req: Request, res: Response)
   const resp = await db.select()
     .from(articles)
     .where(eq(articles.id, articleId));
+  res.json({ resp });
+});
+
+articlesRouter.get("/getArticleBySlug/:slug", async (req: Request, res: Response) => {
+  const { slug } = req.params;
+
+  const resp = await db.select()
+    .from(articles)
+    .where(eq(articles.slug, slug));
   res.json({ resp });
 });
 
