@@ -43,7 +43,7 @@ export default function Navbar() {
             focus-within:ring-2
             focus-within:ring-gray-300
             hover:bg-gray-200"
-          placeholder="Search" fullWidth={true} disableUnderline={true}
+          placeholder="Search" fullWidth={false} disableUnderline={true}
         />
         <img
           className="

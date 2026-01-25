@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button } from '@mui/material';
+// import { Button } from '@mui/material';
 import type { Article } from '../types/Article.ts';
 import { ArticleListSchema } from '../types/Article.ts';
 import ArticleCard from '../components/ArticleCard.tsx';
@@ -27,16 +27,13 @@ export default function ArticleList() {
 
   return (
     <div className="p-3 flex flex-col gap-5">
-      <p>
-        List of articles to be populated and searchable
-      </p>
-      <Button
+      {/*<Button
         style={{ border: "solid", borderWidth: "1px" }}
         onClick={() => getAllArticles()}
       >
         Refresh
-      </Button>
-      <div className="flex flex-col gap-2">
+      </Button>*/}
+      <div className="grid [grid-template-columns:repeat(auto-fit,minmax(16rem,1fr))] gap-5">
         {articles.map((article) => (<ArticleCard key={article.id} article={article} />))}
       </div>
     </div >
