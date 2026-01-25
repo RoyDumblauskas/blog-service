@@ -8,7 +8,7 @@ export const articlesRouter = express.Router();
 
 articlesRouter.get("/getAllArticles", async (_, res: Response) => {
   const resp = await db.select().from(articles);
-  res.json({ resp });
+  res.json(resp);
 });
 
 articlesRouter.get("/getArticle/:articleId", async (req: Request, res: Response) => {
@@ -17,7 +17,7 @@ articlesRouter.get("/getArticle/:articleId", async (req: Request, res: Response)
   const resp = await db.select()
     .from(articles)
     .where(eq(articles.id, articleId));
-  res.json({ resp });
+  res.json(resp);
 });
 
 articlesRouter.get("/getArticleBySlug/:slug", async (req: Request, res: Response) => {
@@ -26,7 +26,7 @@ articlesRouter.get("/getArticleBySlug/:slug", async (req: Request, res: Response
   const resp = await db.select()
     .from(articles)
     .where(eq(articles.slug, slug));
-  res.json({ resp });
+  res.json(resp);
 });
 
 articlesRouter.post("/postArticle", async (req: Request, res: Response) => {
@@ -36,7 +36,7 @@ articlesRouter.post("/postArticle", async (req: Request, res: Response) => {
       ...req.body,
       slug: req.body.name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, ''),
     });
-  res.json({ resp });
+  res.json(resp);
 });
 
 articlesRouter.put("/putArticle/:articleId", async (req: Request, res: Response) => {
@@ -52,7 +52,7 @@ articlesRouter.put("/putArticle/:articleId", async (req: Request, res: Response)
       date_published: req.body.article_status == "published" ? new Date(Date.now()) : null
     })
     .where(eq(articles.id, articleId));
-  res.json({ resp });
+  res.json(resp);
 });
 
 articlesRouter.delete("/deleteArticle/:articleId", async (req: Request, res: Response) => {
@@ -60,5 +60,5 @@ articlesRouter.delete("/deleteArticle/:articleId", async (req: Request, res: Res
   const resp = await db.delete(articles)
     .where(eq(articles.id, articleId));
 
-  res.json({ resp });
+  res.json(resp);
 });
