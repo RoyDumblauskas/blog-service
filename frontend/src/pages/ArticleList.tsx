@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import type { Article } from '../types/Article.ts';
 import { ArticleListSchema } from '../types/Article.ts';
@@ -18,10 +18,12 @@ export default function ArticleList() {
 
     const json = await result.json();
     const data = ArticleListSchema.parse(json);
-    console.log(data);
     setArticles(data);
-
   };
+
+  useEffect(() => {
+    getAllArticles();
+  }, []);
 
   return (
     <div className="p-3 flex flex-col gap-5">
@@ -32,9 +34,9 @@ export default function ArticleList() {
         style={{ border: "solid", borderWidth: "1px" }}
         onClick={() => getAllArticles()}
       >
-        Get All Articles
+        Refresh
       </Button>
-      <div>
+      <div className="flex flex-col gap-2">
         {articles.map((article) => (<ArticleCard key={article.id} article={article} />))}
       </div>
     </div >
