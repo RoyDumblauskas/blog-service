@@ -6,6 +6,7 @@ import Home from './pages/Home.tsx';
 import Article from './pages/Article.tsx';
 import ArticleList from './pages/ArticleList.tsx';
 import Navbar from './components/Navbar.tsx';
+import Profile from './pages/Profile.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')!).render(
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/profile/:profileId" element={<Profile />} />
         <Route path="/article/:slug" element={<Article />} />
         <Route path="/articleList" element={<ArticleList />} />
       </Routes>

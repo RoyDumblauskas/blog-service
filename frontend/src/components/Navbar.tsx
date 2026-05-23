@@ -1,4 +1,4 @@
-import { Button, Input, Typography } from '@mui/material';
+import { Input, Typography } from '@mui/material';
 import { useNavigate } from "react-router";
 import ProfilePlaceholder from "../assets/provile.svg";
 
@@ -31,10 +31,12 @@ export default function Navbar() {
         <div id="search-bar" className="flex items-center pl-3 pr-3">
           <Input />
         </div>
-        <div id="profile-link" className="flex items-center pl-3 pr-3">
-          <Typography className="text-tn3">
-            Profile
-          </Typography>
+        <div
+          id="profile-link"
+          className="flex items-center bg-bold-3 pl-3 pr-3 cursor-pointer"
+          onClick={() => navigate("/profile/testUser")}
+        >
+          <img src={ProfilePlaceholder} alt="Profile Picture" style={{ height: "2.3rem" }} />
         </div>
       </div>
     </div>

@@ -39,7 +39,7 @@ articlesRouter.post("/postArticle", async (req: Request, res: Response) => {
   res.json(resp);
 });
 
-articlesRouter.put("/putArticle/:articleId", async (req: Request, res: Response) => {
+articlesRouter.put("/updateArticle/:articleId", async (req: Request, res: Response) => {
   const { articleId } = req.params;
   const resp = await db.update(articles)
     .set({

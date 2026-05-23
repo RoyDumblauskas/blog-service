@@ -3,6 +3,7 @@ import express, { Response } from 'express';
 import { articlesRouter } from './routes/articles.ts';
 import { blocksRouter } from './routes/blocks.ts';
 import { imagesRouter } from './routes/images.ts';
+import { authRouter } from './routes/auth.ts';
 
 const app = express();
 app.use(express.json());
@@ -14,6 +15,7 @@ app.get("/status", (_, res: Response) => {
 app.use("/articles", articlesRouter);
 app.use("/blocks", blocksRouter);
 app.use("/images", imagesRouter);
+app.use("/auth", authRouter);
 
 
 const port = process.env.PORT || 3000;
