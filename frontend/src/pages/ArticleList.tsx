@@ -26,7 +26,7 @@ export default function ArticleList() {
   }, []);
 
   return (
-    <div className="p-3 flex flex-col gap-5">
+    <div className="page-container p-3 flex flex-col gap-5">
       {/*<Button
         style={{ border: "solid", borderWidth: "1px" }}
         onClick={() => getAllArticles()}

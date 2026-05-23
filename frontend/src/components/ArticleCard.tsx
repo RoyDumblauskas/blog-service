@@ -8,7 +8,6 @@ interface Props {
 
 export default function ArticleCard(props: Props) {
   const navigate = useNavigate();
-  // TODO: Retrieve author id => author name
 
   return (
     <Card

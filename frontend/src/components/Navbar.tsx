@@ -1,43 +1,41 @@
-import { Button, Input } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Button, Input, Typography } from '@mui/material';
+import { useNavigate } from "react-router";
 import ProfilePlaceholder from "../assets/provile.svg";
-import "../style.css";
 
 export default function Navbar() {
-  // TODO: create search function
-  // TODO: Profile integration
+  let navigate = useNavigate();
+
   return (
-    <div className="bg-color-bold-1 flex flex-row justify-between">
-      <div className="flex flex-row justify-start items-center gap-3">
-        <Button
-          component={Link}
-          to="/"
-          variant="outlined"
+    <div className="navbar bg-dark flex flex-row justify-between">
+      <div id="left" className="flex flex-row" >
+        <div
+          id="home-link"
+          className="flex items-center bg-bold-1 pl-3 pr-3 cursor-pointer"
+          onClick={() => navigate("/")}
         >
-          Home
-        </Button>
-
-        <Button
-          component={Link}
-          to="/articleList"
-          variant="outlined"
+          <Typography className="text-tb1">
+            Home
+          </Typography>
+        </div>
+        <div
+          id="articleslist-link"
+          className="flex items-center bg-bold-2 pl-3 pr-3 cursor-pointer"
+          onClick={() => navigate("/articleList")}
         >
-          Articles
-        </Button>
+          <Typography className="text-tb2">
+            Articles
+          </Typography>
+        </div>
       </div>
-
-      <div className="flex flex-row justify-end items-center gap-3">
-        <Input
-          placeholder="Search" fullWidth={false} disableUnderline={true}
-        />
-        <img
-          className="
-            flex
-            h-[3em]
-            w-[3em]
-            rounded-full"
-          src={ProfilePlaceholder} alt="PFP"
-        />
+      <div id="right" className="flex flex-row bg-neutral-3 flex flex-row">
+        <div id="search-bar" className="flex items-center pl-3 pr-3">
+          <Input />
+        </div>
+        <div id="profile-link" className="flex items-center pl-3 pr-3">
+          <Typography className="text-tn3">
+            Profile
+          </Typography>
+        </div>
       </div>
     </div>
   );
