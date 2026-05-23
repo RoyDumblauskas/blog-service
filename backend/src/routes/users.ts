@@ -7,7 +7,7 @@ import { auth } from '../middleware/auth.ts';
 const db = drizzle(process.env.DATABASE_URL!);
 export const usersRouter = express.Router();
 
-usersRouter.get("/getUser/:userId", auth, async (req: Request, res: Response) => {
+usersRouter.get("/getUser/:userId", async (req: Request, res: Response) => {
   const { userId } = req.params;
 
   const resp = await db.select()
