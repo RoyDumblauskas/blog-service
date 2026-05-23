@@ -8,9 +8,12 @@ import {
   integer,
   bigint,
   uniqueIndex,
-  index
+  index,
+  boolean,
+  smallint,
+  check
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { sql, relations } from "drizzle-orm";
 
 export const blockTypeEnum = pgEnum("post_block_type", [
   "title",
@@ -34,7 +37,7 @@ export const articles = pgTable("articles", {
   name: varchar({ length: 255 }).notNull(),
   article_status: articleStatusEnum().default("draft"),
   author_id: uuid().notNull(),
-  slug: varchar({ length: 255 }).unique().notNull(),
+  slug: varchar({ length: 511 }).unique().notNull(),
   summary: varchar({ length: 255 }).notNull(),
 
   date_created: timestamp({ mode: "date", withTimezone: true }).defaultNow().notNull(),
@@ -70,6 +73,22 @@ export const images = pgTable("images", {
 
 });
 
+export const users = pgTable("users", {
+  id: uuid().notNull().primaryKey().defaultRandom(),
+  display_name: varchar({ length: 63 }).notNull(),
+
+  username: varchar({ length: 63 }).notNull(),
+  hashed_password: varchar({ length: 255 }).notNull(),
+  logged_in: boolean().notNull().default(false),
+
+  token: varchar({ length: 511 }),
+  permissions: smallint().notNull().default(44),
+},
+  (users) => [
+    check("permissions lower bound", sql`users.permissions >= 0`),
+    check("permissions upper bound", sql`users.permissions <= 77`),
+  ]
+);
 
 export const articlesRelations = relations(articles, ({ many }) => ({
   blocks: many(articleBlocks),

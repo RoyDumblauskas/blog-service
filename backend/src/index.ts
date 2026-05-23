@@ -4,6 +4,7 @@ import { articlesRouter } from './routes/articles.ts';
 import { blocksRouter } from './routes/blocks.ts';
 import { imagesRouter } from './routes/images.ts';
 import { authRouter } from './routes/auth.ts';
+import { usersRouter } from './routes/users.ts';
 
 const app = express();
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use("/articles", articlesRouter);
 app.use("/blocks", blocksRouter);
 app.use("/images", imagesRouter);
 app.use("/auth", authRouter);
+app.use("/users", usersRouter);
 
 
 const port = process.env.PORT || 3000;
