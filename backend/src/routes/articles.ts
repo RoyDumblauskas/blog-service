@@ -13,19 +13,21 @@ articlesRouter.get("/getAllArticles", async (_, res: Response) => {
 
 articlesRouter.get("/getArticle/:articleId", async (req: Request, res: Response) => {
   const { articleId } = req.params;
+  const parsedId = Array.isArray(articleId) ? articleId[0] : articleId;
 
   const resp = await db.select()
     .from(articles)
-    .where(eq(articles.id, articleId));
+    .where(eq(articles.id, parsedId));
   res.json(resp);
 });
 
 articlesRouter.get("/getArticleBySlug/:slug", async (req: Request, res: Response) => {
   const { slug } = req.params;
+  const parsedSlug = Array.isArray(slug) ? slug[0] : slug;
 
   const resp = await db.select()
     .from(articles)
-    .where(eq(articles.slug, slug));
+    .where(eq(articles.slug, parsedSlug));
   res.json(resp);
 });
 
@@ -41,6 +43,8 @@ articlesRouter.post("/postArticle", async (req: Request, res: Response) => {
 
 articlesRouter.put("/updateArticle/:articleId", async (req: Request, res: Response) => {
   const { articleId } = req.params;
+  const parsedId = Array.isArray(articleId) ? articleId[0] : articleId;
+
   const resp = await db.update(articles)
     .set({
       name: req.body.name,
@@ -51,14 +55,16 @@ articlesRouter.put("/updateArticle/:articleId", async (req: Request, res: Respon
       last_edit: new Date(Date.now()),
       date_published: req.body.article_status == "published" ? new Date(Date.now()) : null
     })
-    .where(eq(articles.id, articleId));
+    .where(eq(articles.id, parsedId));
   res.json(resp);
 });
 
 articlesRouter.delete("/deleteArticle/:articleId", async (req: Request, res: Response) => {
   const { articleId } = req.params;
+  const parsedId = Array.isArray(articleId) ? articleId[0] : articleId;
+
   const resp = await db.delete(articles)
-    .where(eq(articles.id, articleId));
+    .where(eq(articles.id, parsedId));
 
   res.json(resp);
 });

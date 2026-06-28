@@ -46,7 +46,6 @@ export async function auth(
       decodedToken.header.alg === "HS256" &&
       decodedToken.header.typ === "JWT";
 
-
     if (validJWT && validClaims) {
       req.jwt = decodedToken;
     } else {

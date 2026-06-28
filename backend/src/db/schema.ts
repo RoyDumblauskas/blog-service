@@ -13,7 +13,7 @@ import {
   smallint,
   check
 } from "drizzle-orm/pg-core";
-import { sql, relations } from "drizzle-orm";
+import { sql, defineRelations } from "drizzle-orm";
 
 export const blockTypeEnum = pgEnum("post_block_type", [
   "title",
@@ -90,13 +90,14 @@ export const users = pgTable("users", {
   ]
 );
 
-export const articlesRelations = relations(articles, ({ many }) => ({
-  blocks: many(articleBlocks),
-}));
-
-export const articleBlocksRelations = relations(articleBlocks, ({ one }) => ({
-  article: one(articles, {
-    fields: [articleBlocks.article_id],
-    references: [articles.id],
-  }),
+export const relations = defineRelations({ articles, articleBlocks }, (r) => ({
+  articles: {
+    blocks: r.many.articleBlocks()
+  },
+  articleBlocks: {
+    article: r.one.articles({
+      from: r.articleBlocks.article_id,
+      to: r.articles.id
+    })
+  }
 }));

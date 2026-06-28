@@ -9,11 +9,11 @@ export const usersRouter = express.Router();
 
 usersRouter.get("/getUser/:userId", auth, async (req: Request, res: Response) => {
   const { userId } = req.params;
-
+  const parsedId = Array.isArray(userId) ? userId[0] : userId;
 
   const resp = await db.select()
     .from(users)
-    .where(eq(users.id, userId));
+    .where(eq(users.id, parsedId));
 
   res.json(resp);
 });
