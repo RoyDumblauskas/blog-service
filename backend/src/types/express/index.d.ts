@@ -1,4 +1,4 @@
-import JsonWebToken from './src/types/JsonWebToken.ts';
+import JsonWebToken from '../JsonWebToken.ts';
 export { }
 
 

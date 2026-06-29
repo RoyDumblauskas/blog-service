@@ -13,6 +13,7 @@
     "drizzle-orm": "^1.0.0-rc.4",
     "express": "^5.1.0",
     "pg": "^8.22.0",
+    "typescript": "^6.0.3",
     "uuid": "^13.0.0"
   },
   "devDependencies": {

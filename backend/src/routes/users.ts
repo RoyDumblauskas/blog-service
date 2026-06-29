@@ -7,7 +7,12 @@ import { auth } from '../middleware/auth.ts';
 const db = drizzle(process.env.DATABASE_URL!);
 export const usersRouter = express.Router();
 
-usersRouter.get("/getUsers", async (_: Request, res: Response) => {
+usersRouter.get("/getUsers", auth, async (req: Request, res: Response) => {
+  if (req.jwt.payload.prm === 44)
+    return res
+      .status(401)
+      .json({ error: "Cannot access endpoint with default permissions" });
+
   const resp = await db.select().from(users);
   res.json(resp)
 });
