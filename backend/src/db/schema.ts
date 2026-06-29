@@ -7,8 +7,7 @@ import {
   varchar,
   integer,
   bigint,
-  uniqueIndex,
-  index,
+  unique,
   boolean,
   smallint,
   check
@@ -35,15 +34,19 @@ export const articles = pgTable("articles", {
   id: uuid().notNull().primaryKey().defaultRandom(),
 
   name: varchar({ length: 255 }).notNull(),
-  article_status: articleStatusEnum().default("draft"),
-  author_id: uuid().notNull(),
+  article_status: articleStatusEnum().notNull().default("draft"),
+  author_id: uuid().notNull().references(() => users.id, { onDelete: "cascade" }),
   slug: varchar({ length: 511 }).unique().notNull(),
   summary: varchar({ length: 255 }).notNull(),
 
   date_created: timestamp({ mode: "date", withTimezone: true }).defaultNow().notNull(),
   last_edit: timestamp({ mode: "date", withTimezone: true }).defaultNow().notNull(),
   date_published: timestamp({ mode: "date", withTimezone: true }),
-});
+},
+  (table) => [{
+    slugIdx: unique("no_repeat_slugs_per_author")
+      .on(table.author_id, table.slug)
+  }]);
 
 export const articleBlocks = pgTable("article_blocks", {
   id: uuid().notNull().primaryKey().defaultRandom(),
@@ -55,22 +58,18 @@ export const articleBlocks = pgTable("article_blocks", {
 
 },
   (table) => [{
-    postPositionIdx: uniqueIndex("article_blocks_article_position_idx")
-      .on(table.article_id, table.position),
-
-    postIdx: index("article_blocks_article_id_idx")
-      .on(table.article_id),
+    postPositionIdx: unique("no_repeat_block_position_per_article")
+      .on(table.article_id, table.position)
   }]);
 
 export const images = pgTable("images", {
-  id: uuid().notNull().primaryKey().defaultRandom(),
+  id: uuid().notNull().primaryKey().defaultRandom(), // Linked in 'content' of articleBlock with type 'image'
   bucket: varchar({ length: 63 }).notNull(),
   key: varchar({ length: 255 }).notNull(),
   mime_type: varchar({ length: 63 }).notNull(),
   height: integer().notNull(),
   width: integer().notNull(),
   bytes: bigint({ mode: "number" }).notNull(),
-
 });
 
 export const users = pgTable("users", {
@@ -84,13 +83,13 @@ export const users = pgTable("users", {
   token: varchar({ length: 511 }),
   permissions: smallint().notNull().default(44),
 },
-  (users) => [
+  (_) => [
     check("permissions lower bound", sql`users.permissions >= 0`),
     check("permissions upper bound", sql`users.permissions <= 77`),
   ]
 );
 
-export const relations = defineRelations({ articles, articleBlocks }, (r) => ({
+export const relations = defineRelations({ articles, articleBlocks, users }, (r) => ({
   articles: {
     blocks: r.many.articleBlocks()
   },
