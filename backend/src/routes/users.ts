@@ -8,10 +8,12 @@ const db = drizzle(process.env.DATABASE_URL!);
 export const usersRouter = express.Router();
 
 usersRouter.get("/getUsers", auth, async (req: Request, res: Response) => {
-  if (req.jwt.payload.prm === 44)
+  if (req.jwt.payload.prm != 77)
     return res
-      .status(401)
-      .json({ error: "Cannot access endpoint with default permissions" });
+      .status(403)
+      .json({
+        error: "403: Forbidden"
+      });
 
   const resp = await db.select().from(users);
   res.json(resp)

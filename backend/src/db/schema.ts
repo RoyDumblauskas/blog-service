@@ -74,9 +74,9 @@ export const images = pgTable("images", {
 
 export const users = pgTable("users", {
   id: uuid().notNull().primaryKey().defaultRandom(),
-  display_name: varchar({ length: 63 }).notNull(),
+  display_name: varchar({ length: 63 }).unique().notNull(),
 
-  username: varchar({ length: 63 }).notNull(),
+  username: varchar({ length: 63 }).unique().notNull(),
   hashed_password: varchar({ length: 255 }).notNull(),
   logged_in: boolean().notNull().default(false),
 
