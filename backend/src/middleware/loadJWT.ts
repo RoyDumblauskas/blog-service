@@ -46,7 +46,6 @@ export function loadJWT(
       decodedToken.header.typ === "JWT";
 
     if (validJWT && validClaims) {
-      console.log(decodedToken)
       req.jwt = decodedToken;
     } else {
       // maybe attempt token refresh here
