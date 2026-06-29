@@ -2,12 +2,12 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
 import { users } from '../db/schema.ts';
 import express, { Request, Response } from "express";
-import { auth } from '../middleware/auth.ts';
+import { loadJWT } from '../middleware/loadJWT.ts';
 
 const db = drizzle(process.env.DATABASE_URL!);
 export const usersRouter = express.Router();
 
-usersRouter.get("/getUsers", auth, async (req: Request, res: Response) => {
+usersRouter.get("/getUsers", loadJWT, async (req: Request, res: Response) => {
   if (req.jwt.payload.prm != 77)
     return res
       .status(403)

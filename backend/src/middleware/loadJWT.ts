@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import JsonWebToken, { defaultJWT } from '../types/JsonWebToken.ts';
-import { verifySignature, decodeJWT } from '../helpers/auth.ts';
+import { verifySignature, decodeJWT } from '../helpers/jwt.ts';
 
-export function auth(
+export function loadJWT(
   req: Request,
   res: Response,
   next: NextFunction

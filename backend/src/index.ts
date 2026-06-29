@@ -5,7 +5,6 @@ import { blocksRouter } from './routes/blocks.ts';
 import { imagesRouter } from './routes/images.ts';
 import { authRouter } from './routes/auth.ts';
 import { usersRouter } from './routes/users.ts';
-import { auth } from './middleware/auth.ts';
 
 const app = express();
 app.use(express.json());

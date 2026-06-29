@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { eq } from 'drizzle-orm';
 import { users } from '../db/schema.ts';
 import express, { Request, Response } from "express";
-import { generateSignedJWT, base64UrlDecode } from '../helpers/auth.ts';
+import { generateSignedJWT, base64UrlDecode } from '../helpers/jwt.ts';
 
 const db = drizzle(process.env.DATABASE_URL!);
 const hashSecret = process.env.PASSWORD_HASH_SECRET!;

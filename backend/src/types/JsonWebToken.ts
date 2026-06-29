@@ -1,5 +1,3 @@
-import { encodeMessage } from '../helpers/auth.ts';
-
 type JsonWebToken = {
   header: {
     alg: string;
