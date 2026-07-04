@@ -80,7 +80,7 @@ export const users = pgTable("users", {
   hashed_password: varchar({ length: 255 }).notNull(),
   logged_in: boolean().notNull().default(false),
 
-  token: varchar({ length: 511 }),
+  refresh_token: varchar({ length: 511 }),
   permissions: smallint().notNull().default(44),
 },
   (_) => [

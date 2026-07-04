@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import JsonWebToken, { defaultJWT } from '../types/JsonWebToken.ts';
+import JsonWebToken from '../types/JsonWebToken.ts';
 import { verifySignature, decodeJWT } from '../helpers/jwt.ts';
+import { refreshJWT } from "./refreshJWT.ts";
+import { validateCall } from "./validateCall.ts";
 
 export function loadJWT(
   req: Request,
@@ -9,22 +11,30 @@ export function loadJWT(
 ) {
   const authHeader = req.header("Authorization");
 
-  // If there is no jwt, proceed to request with default permissions
+  // If there is no jwt, fail
   if (!authHeader) {
-    req.jwt = defaultJWT();
+    return res.status(401).json({
+      error: "Missing JWT"
+    });
   } else {
     // otherwise decode the jwt
     const [scheme, token] = authHeader.split(" ");
 
     if (scheme.toLowerCase() != "bearer") {
       return res.status(401).json({
-        error: "Invalid JWT"
+        error: "Invalid Authorization Scheme"
+      });
+    };
+
+    if (token === "") {
+      return res.status(401).json({
+        error: "Missing JWT"
       });
     };
 
     if (token.split(".").length !== 3) {
       return res.status(401).json({
-        error: "Invalid JWT"
+        error: "Malformed JWT"
       });
     }
 
@@ -36,25 +46,28 @@ export function loadJWT(
       decodedToken = decodeJWT(token);
     } catch {
       return res.status(401).json({
-        error: "Invalid JWT"
+        error: "Malformed JWT"
       });
     }
 
     const validClaims: boolean =
-      decodedToken.payload.exp >= Math.floor(Date.now() / 1000) &&
       decodedToken.header.alg === "HS256" &&
       decodedToken.header.typ === "JWT";
 
-    if (validJWT && validClaims) {
+    const expired: boolean = decodedToken.payload.exp < Math.floor(Date.now() / 1000);
+
+    if (validJWT && validClaims && !expired) {
       req.jwt = decodedToken;
+    } else if (validJWT && validClaims && expired) {
+      req.jwt = decodedToken;
+      return refreshJWT(req, res, next);
     } else {
-      // maybe attempt token refresh here
       return res.status(401).json({
         error: "Invalid JWT"
       });
     }
   }
 
-  next();
+  return validateCall(req, res, next);
 };
 

@@ -32,14 +32,16 @@ authRouter.get("/login", async (req: Request, res: Response) => {
     .update(`${presalt}${password}${postsalt}`)
     .digest("base64url");
 
-  const user = await db
+  const potentialUsers = await db
     .select()
     .from(users)
     .where(eq(users.username, username))
     .limit(1);
 
+  const user = potentialUsers[0];
+
   const calculatedBuff = Buffer.from(hashedPassword);
-  const storedBuff = Buffer.from(user[0].hashed_password);
+  const storedBuff = Buffer.from(user.hashed_password);
 
   const match = calculatedBuff.length === storedBuff.length &&
     crypto.timingSafeEqual(calculatedBuff, storedBuff);
@@ -47,9 +49,25 @@ authRouter.get("/login", async (req: Request, res: Response) => {
   if (!match)
     return res.status(401).json({ error: "401: failed to authenticate username/password" });
 
-  const jwt = generateSignedJWT(user[0].id, user[0].permissions)
+  // fifteen minutes
+  const tempToExpire = 60 * 15;
+  const jwt = generateSignedJWT(user.id, user.permissions, tempToExpire)
 
-  res.json({ signed_jwt: jwt });
+  // 7 days
+  const refreshToExpire = 60 * 60 * 24 * 7;
+  const refreshjwt = generateSignedJWT(user.id, user.permissions, refreshToExpire);
+
+  const resp = await db
+    .update(users)
+    .set({
+      refresh_token: refreshjwt
+    })
+    .where(eq(users.id, user.id));
+
+  res.json({
+    signed_jwt: jwt,
+    refresh_resp: resp
+  });
 });
 
 authRouter.get("/logout", async (req: Request, res: Response) => {

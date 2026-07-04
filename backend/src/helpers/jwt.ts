@@ -42,12 +42,11 @@ export function decodeJWT(token: string) {
   return { header, payload, signature };
 }
 
-export function generateSignedJWT(userId: string, permissions: number): string {
+export function generateSignedJWT(userId: string, permissions: number, secondsToExpire: number): string {
   const signingSecret = process.env.JWT_SECRET!;
 
   const now = Math.floor(Date.now() / 1000);
-  // fifteen minutes
-  const expires = now + (15 * 60);
+  const expires = now + secondsToExpire;
 
   const header: JsonWebToken["header"] = {
     alg: "HS256",
