@@ -51,19 +51,29 @@ authRouter.post("/signup", async (req: Request, res: Response) => {
     .update(`${presalt}${password}${postsalt}`)
     .digest("base64url");
 
-  await db
-    .insert(users)
-    .values({
-      display_name: display_name,
-      username: username,
-      hashed_password: hashedPassword,
-      permissions: 44
-    });
+  try {
+    await db
+      .insert(users)
+      .values({
+        display_name: display_name,
+        username: username,
+        hashed_password: hashedPassword,
+        permissions: 44
+      });
+  } catch (err: any) {
+    if (err.cause.code === "23505") {
+      return res.status(409).json({
+        error: "Username already exists"
+      });
+    }
+
+    throw err;
+  }
 
   loginUser(username, password, res);
 });
 
-// because it write the response, has to be last step
+// because it writes to the response, has to be last step
 async function loginUser(username: string, password: string, res: Response) {
   const hashedPassword = crypto
     .createHmac('sha256', hashSecret)

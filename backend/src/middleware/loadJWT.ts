@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import JsonWebToken from '../types/JsonWebToken.ts';
 import { verifySignature, decodeJWT } from '../helpers/jwt.ts';
 import { refreshJWT } from "./refreshJWT.ts";
-import { validateCall } from "./validateCall.ts";
 
 export function loadJWT(
   req: Request,
@@ -68,6 +67,6 @@ export function loadJWT(
     }
   }
 
-  return validateCall(req, res, next);
+  return next();
 };
 

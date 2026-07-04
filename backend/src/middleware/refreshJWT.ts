@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { validateCall } from "./validateCall.ts";
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { eq } from 'drizzle-orm';
 import { users } from '../db/schema.ts';
@@ -66,5 +65,5 @@ export async function refreshJWT(
   const parsedJWT = decodeJWT(jwt);
   req.jwt = parsedJWT;
 
-  return validateCall(req, res, next);
+  return next();
 };
