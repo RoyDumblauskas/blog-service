@@ -57,9 +57,9 @@ export async function refreshJWT(
     });
   }
 
-  const tempToExpire = 60 * 15;
-  const jwt = generateSignedJWT(user.id, user.permissions, tempToExpire)
-  res.json({ signed_jwt: jwt });
+  const toExpire = 60 * 15;
+  const jwt = generateSignedJWT(user.id, user.permissions, toExpire)
+  res.set("X-New-Access-Token", jwt);
 
   // Have to overwrite with new jwt
   // Also I ain't try/catching cause I just made it
