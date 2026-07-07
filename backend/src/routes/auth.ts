@@ -58,7 +58,7 @@ authRouter.post("/signup", async (req: Request, res: Response) => {
         display_name: display_name,
         username: username,
         hashed_password: hashedPassword,
-        permissions: 44
+        permissions: 71
       });
   } catch (err: any) {
     if (err.cause.code === "23505") {

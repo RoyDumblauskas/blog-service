@@ -10,7 +10,8 @@ import {
   unique,
   boolean,
   smallint,
-  check
+  check,
+  foreignKey
 } from "drizzle-orm/pg-core";
 import { sql, defineRelations } from "drizzle-orm";
 
@@ -42,11 +43,26 @@ export const articles = pgTable("articles", {
   date_created: timestamp({ mode: "date", withTimezone: true }).defaultNow().notNull(),
   last_edit: timestamp({ mode: "date", withTimezone: true }).defaultNow().notNull(),
   date_published: timestamp({ mode: "date", withTimezone: true }),
+
+  previous_article: uuid(),
+  next_article: uuid()
 },
-  (table) => [{
-    slugIdx: unique("no_repeat_slugs_per_author")
-      .on(table.author_id, table.slug)
-  }]);
+  (table) => [
+    unique("no_repeat_slugs_per_author")
+      .on(table.author_id, table.slug),
+
+    foreignKey({
+      name: "next_article_ref_id",
+      columns: [table.next_article],
+      foreignColumns: [table.id]
+    }),
+
+    foreignKey({
+      name: "previous_article_ref_id",
+      columns: [table.previous_article],
+      foreignColumns: [table.id]
+    })
+  ]);
 
 export const articleBlocks = pgTable("article_blocks", {
   id: uuid().notNull().primaryKey().defaultRandom(),
